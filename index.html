@@ -1,51 +1,33 @@
 <!DOCTYPE html>
-<html lang="zh">
+<html lang="zh-CN">
 <head>
   <meta charset="UTF-8">
-  <title>BTC 数据查看器</title>
+  <title>现货 BTC JSON 数据</title>
   <style>
-    body { font-family: Arial, sans-serif; padding: 20px; }
-    select { margin-bottom: 20px; padding: 5px; }
-    pre { background: #f4f4f4; padding: 15px; border-radius: 5px; max-height: 500px; overflow: auto; }
+    body { font-family: monospace; margin: 20px; white-space: pre-wrap; }
+    h1 { text-align: center; }
   </style>
 </head>
 <body>
-  <h2>BTC 数据查看器</h2>
 
-  <label for="dataType">选择数据类型：</label>
-  <select id="dataType">
-    <option value="现货btcusdt_1h.json">现货 (Spot)</option>
-    <option value="合约_btcusdt_1h.json">合约 (Futures)</option>
-  </select>
+<h1>现货 BTC JSON 数据</h1>
+<pre id="jsonContent">正在加载...</pre>
 
-  <pre id="output">请选择数据类型</pre>
-
-  <script>
-    const select = document.getElementById("dataType");
-    const output = document.getElementById("output");
-
-    async function loadData(fileName) {
-      try {
-        output.textContent = "加载中...";
-        const response = await fetch(fileName);
-        if (!response.ok) {
-          throw new Error("HTTP 错误: " + response.status);
-        }
-        const data = await response.json();
-        output.textContent = JSON.stringify(data.slice(0, 20), null, 2); 
-        // 只显示前20条，避免太长
-      } catch (err) {
-        output.textContent = "加载失败: " + err;
-      }
+<script>
+  async function loadJSON() {
+    try {
+      const response = await fetch('现货btcusdt_1h.json'); // 确保文件名正确且在同一目录
+      if (!response.ok) throw new Error('加载 JSON 失败');
+      const data = await response.json();
+      document.getElementById('jsonContent').textContent = JSON.stringify(data, null, 2);
+    } catch (err) {
+      document.getElementById('jsonContent').textContent = '加载失败: ' + err.message;
+      console.error(err);
     }
+  }
 
-    // 默认加载第一个
-    loadData(select.value);
+  loadJSON();
+</script>
 
-    // 切换时加载
-    select.addEventListener("change", () => {
-      loadData(select.value);
-    });
-  </script>
 </body>
 </html>
