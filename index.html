@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+  <meta charset="UTF-8">
+  <title>BTC 数据展示</title>
+  <style>
+    body { font-family: Arial, sans-serif; padding: 20px; }
+    pre { background: #f4f4f4; padding: 10px; border-radius: 5px; }
+  </style>
+</head>
+<body>
+  <h1>BTC 数据 (最新 JSON)</h1>
+  <pre id="data">加载中...</pre>
+
+  <script>
+    fetch('btcusdt.json')  // ⚠️ 确保和你上传的JSON文件名一致
+      .then(response => response.json())
+      .then(data => {
+        document.getElementById('data').textContent = JSON.stringify(data, null, 2);
+      })
+      .catch(err => {
+        document.getElementById('data').textContent = '加载失败: ' + err;
+      });
+  </script>
+</body>
+</html>
