@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+<meta charset="UTF-8">
+<title>BTC 现货数据</title>
+</head>
+<body>
+<h1>BTC 现货数据 (JSON)</h1>
+<pre id="jsonData">加载中...</pre>
+
+<script>
+// 1. JSON 文件路径
+const jsonFile = '合约_btcusdt_1h.json';
+
+// 2. 获取 JSON 并显示
+fetch(jsonFile)
+  .then(response => {
+    if (!response.ok) throw new Error('无法加载 JSON 文件');
+    return response.json();
+  })
+  .then(data => {
+    document.getElementById('jsonData').textContent = JSON.stringify(data, null, 2);
+  })
+  .catch(err => {
+    document.getElementById('jsonData').textContent = '加载失败: ' + err;
+  });
+</script>
+</body>
+</html>
