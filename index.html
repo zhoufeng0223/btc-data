@@ -2,25 +2,38 @@
 <html lang="zh">
 <head>
   <meta charset="UTF-8">
-  <title>BTC 数据展示</title>
+  <title>币安数据查看</title>
   <style>
-    body { font-family: Arial, sans-serif; padding: 20px; }
-    pre { background: #f4f4f4; padding: 10px; border-radius: 5px; }
+    body { font-family: monospace; padding: 20px; background: #f7f7f7; }
+    select { font-size: 16px; padding: 5px; margin-bottom: 20px; }
+    pre { background: #fff; padding: 10px; border: 1px solid #ccc; max-height: 600px; overflow: auto; }
   </style>
 </head>
 <body>
-  <h1>BTC 数据 (最新 JSON)</h1>
-  <pre id="data">加载中...</pre>
+  <h2>币安数据查看器</h2>
+  <select id="dataType">
+    <option value="">请选择数据类型</option>
+    <option value="现货btcusdt_1h.json">现货数据</option>
+    <option value="合约_btcusdt_1h.json">合约数据</option>
+  </select>
+
+  <pre id="data">等待加载数据...</pre>
 
   <script>
-    fetch('btcusdt.json')  // ⚠️ 确保和你上传的JSON文件名一致
-      .then(response => response.json())
-      .then(data => {
-        document.getElementById('data').textContent = JSON.stringify(data, null, 2);
-      })
-      .catch(err => {
-        document.getElementById('data').textContent = '加载失败: ' + err;
-      });
+    const select = document.getElementById("dataType");
+    const output = document.getElementById("data");
+
+    select.addEventListener("change", () => {
+      if (!select.value) return;
+      fetch(select.value)
+        .then(res => res.json())
+        .then(data => {
+          output.textContent = JSON.stringify(data, null, 2);
+        })
+        .catch(err => {
+          output.textContent = "加载失败: " + err;
+        });
+    });
   </script>
 </body>
 </html>
