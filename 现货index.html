@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <title>现货 BTC JSON 数据</title>
+  <style>
+    body { font-family: monospace; margin: 20px; white-space: pre-wrap; }
+    h1 { text-align: center; }
+  </style>
+</head>
+<body>
+
+<h1>现货 BTC JSON 数据</h1>
+<pre id="jsonContent">正在加载...</pre>
+
+<script>
+  async function loadJSON() {
+    try {
+      const response = await fetch('现货btcusdt_1h.json'); // 确保文件名正确且在同一目录
+      if (!response.ok) throw new Error('加载 JSON 失败');
+      const data = await response.json();
+      document.getElementById('jsonContent').textContent = JSON.stringify(data, null, 2);
+    } catch (err) {
+      document.getElementById('jsonContent').textContent = '加载失败: ' + err.message;
+      console.error(err);
+    }
+  }
+
+  loadJSON();
+</script>
+
+</body>
+</html>
